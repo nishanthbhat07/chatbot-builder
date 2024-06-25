@@ -12,13 +12,13 @@ export default function SettingsNode() {
   };
   return (
     <Draggable grid={[25, 25]} position={position} onStop={onDragStop}>
-      <div className="w-1/2 border-2 flex flex-col justify-between items-center p-3 rounded">
+      <div className="w-1/2 border-2 flex flex-col justify-between items-center p-3 rounded border-blue-400">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           strokeWidth={1.5}
-          className="size-6 stroke-purple-400"
+          className="size-6 stroke-blue-400"
         >
           <path
             strokeLinecap="round"

@@ -1,33 +1,31 @@
 import { createContext, useCallback, useState } from "react";
-import { addEdge, applyEdgeChanges, applyNodeChanges } from "reactflow";
+import { addEdge, useEdgesState, useNodesState } from "reactflow";
 import PropTypes from "prop-types";
 
 export const GlobalContext = createContext();
 
-const initalNodes = [
-  {
-    id: "1", // required
-    type: "send_message",
-    position: { x: 0, y: 0 }, // required
-  },
-  {
-    id: "2", // required
-    position: { x: 200, y: 10 }, // required
-  },
-];
-
 export const GlobalProvider = ({ children }) => {
-  const [nodes, setNodes] = useState(initalNodes);
-  const [edges, setEdges] = useState([]);
+  const [nodes, setNodes, onNodesChange] = useNodesState([]);
+  const [edges, setEdges, onEdgesChange] = useEdgesState([]);
 
-  const onNodesChange = useCallback(
-    (changes) => setNodes((nds) => applyNodeChanges(changes, nds)),
-    [setNodes]
-  );
-  const onEdgesChange = useCallback(
-    (changes) => setEdges((eds) => applyEdgeChanges(changes, eds)),
-    [setEdges]
-  );
+  const [isNodeSettingsShown, setIsNodeSettingsShown] = useState(false);
+  const [currentNode, setCurrentNode] = useState();
+  const [nodeValue, setNodeValue] = useState("");
+
+  const handleSaveChanges = () => {
+    setNodes((prevNodes) => {
+      const copyOfNodes = prevNodes;
+      const idx = copyOfNodes.findIndex((item) => item.id === currentNode);
+      const node = copyOfNodes.find((item) => item.id === currentNode);
+      copyOfNodes.splice(idx, 1, { ...node, data: { value: nodeValue } });
+      return copyOfNodes;
+    });
+
+    setNodeValue("");
+    setCurrentNode();
+    setIsNodeSettingsShown(false);
+  };
+
   const onConnect = useCallback(
     (connection) => setEdges((eds) => addEdge(connection, eds)),
     [setEdges]
@@ -37,14 +35,14 @@ export const GlobalProvider = ({ children }) => {
     setNodes((prevNodes) => [
       ...prevNodes,
       {
-        id: Number(Number(prevNodes[prevNodes.length - 1]?.id) + 1).toString(),
+        id: Number(
+          (Number(prevNodes[prevNodes.length - 1]?.id) || 0) + 1
+        ).toString(),
         type: "send_message",
         position: { x, y },
       },
     ]);
   };
-
-  console.log("NODES", nodes);
 
   return (
     <GlobalContext.Provider
@@ -55,6 +53,13 @@ export const GlobalProvider = ({ children }) => {
         onEdgesChange,
         onConnect,
         addNodes,
+        isNodeSettingsShown,
+        setIsNodeSettingsShown,
+        currentNode,
+        setCurrentNode,
+        nodeValue,
+        setNodeValue,
+        handleSaveChanges,
       }}
     >
       {children}

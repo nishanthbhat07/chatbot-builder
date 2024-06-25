@@ -1,45 +1,46 @@
 // import { useCallback } from "react";
 import { Handle, Position } from "reactflow";
-import Draggable from "react-draggable";
 import "./styles.css";
 import PropTypes from "prop-types";
+import { useGlobalContext } from "../../contexts/global-hooks";
 
-const handleStyle = { left: 10 };
-
-function CustomNode({ data, isConnectable }) {
-  //   const onChange = useCallback((evt) => {
-  //     console.log(evt.target.value);
-  //   }, []);
-
+function CustomNode({ data, isConnectable, id }) {
+  const {
+    currentNode,
+    setCurrentNode,
+    setIsNodeSettingsShown,
+    isNodeSettingsShown,
+  } = useGlobalContext();
+  console.log("Line14", data);
   return (
-    <Draggable>
-      <div className="rounded border-2">
-        <Handle
-          type="target"
-          position={Position.Top}
-          isConnectable={isConnectable}
-        />
-        <div>
-          <div className="bg-teal-400 px-4 py-1">
-            <span className="text-sm">Send Message</span>
-          </div>
-          <p className="text-black text-xs px-4 py-4">{data?.value || ""}</p>
+    <div
+      onClick={() => {
+        setCurrentNode(id);
+        setIsNodeSettingsShown(true);
+      }}
+      className={`rounded border-2 w-auto ${
+        isNodeSettingsShown && currentNode === id ? "border-blue-400" : ""
+      }`}
+    >
+      <div>
+        <div className="bg-teal-400 px-4 py-1">
+          <span className="text-xs font-bold">Send Message</span>
         </div>
-        <Handle
-          type="source"
-          position={Position.Bottom}
-          id="a"
-          style={handleStyle}
-          isConnectable={isConnectable}
-        />
-        <Handle
-          type="source"
-          position={Position.Bottom}
-          id="b"
-          isConnectable={isConnectable}
-        />
+        <p className="text-black text-xs px-4 py-4">{data?.value || ""}</p>
       </div>
-    </Draggable>
+      <Handle
+        type="target"
+        position={Position.Left}
+        id="a"
+        isConnectable={isConnectable}
+      />
+      <Handle
+        type="source"
+        id="b"
+        position={Position.Right}
+        isConnectable={isConnectable}
+      />
+    </div>
   );
 }
 
@@ -47,4 +48,5 @@ export default CustomNode;
 CustomNode.propTypes = {
   data: PropTypes.object.isRequired,
   isConnectable: PropTypes.bool.isRequired,
+  id: PropTypes.string.isRequired,
 };
