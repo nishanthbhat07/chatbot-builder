@@ -2,6 +2,7 @@ import PropTypes from "prop-types";
 import Header from "../components/header";
 import { GlobalProvider } from "../contexts/global";
 
+// Layout file
 export default function FlowLayout({ children }) {
   return (
     <GlobalProvider>

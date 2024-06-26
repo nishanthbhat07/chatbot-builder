@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import SettingsNode from "../../components/settings-node";
 import { useGlobalContext } from "../../contexts/global-hooks";
 
+// settings panel view
 export default function SettingsPanel() {
   const {
     isNodeSettingsShown,
@@ -19,6 +20,7 @@ export default function SettingsPanel() {
     }
   }, [nodes, currentNode, setNodeValue]);
 
+  // if the node settings is visible then the below UI is shown
   if (isNodeSettingsShown) {
     return (
       <div className="w-1/5  border-slate-400 bg-white border-s-2 border-t-2">
@@ -30,7 +32,7 @@ export default function SettingsPanel() {
             viewBox="0 0 24 24"
             strokeWidth={1.5}
             stroke="currentColor"
-            className="size-4"
+            className="size-4 cursor-pointer"
           >
             <path
               strokeLinecap="round"

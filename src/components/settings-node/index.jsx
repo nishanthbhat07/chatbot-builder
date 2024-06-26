@@ -2,17 +2,17 @@ import Draggable from "react-draggable";
 import { useGlobalContext } from "../../contexts/global-hooks";
 import { useState } from "react";
 
+// Node component that is displayed in Settings Panel
 export default function SettingsNode() {
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const { addNodes } = useGlobalContext();
-  const onDragStop = (e, data) => {
-    console.log(e, data);
+  const onDragStop = (e) => {
     addNodes({ x: e.x, y: e.y });
     setPosition({ x: 0, y: 0 });
   };
   return (
     <Draggable grid={[25, 25]} position={position} onStop={onDragStop}>
-      <div className="w-1/2 border-2 flex flex-col justify-between items-center p-3 rounded border-blue-400">
+      <div className="w-1/2 border-2 flex flex-col justify-between items-center p-3 rounded border-blue-400 cursor-pointer">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
