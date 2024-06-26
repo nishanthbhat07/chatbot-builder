@@ -12,7 +12,11 @@
 
 - The project is deployed on vercel. [Chatbot Builder](https://chatbot-builder-red.vercel.app/)
 - Project is setup using Vite
-- Project uses the following dependencies - React Flow - For building the flow builder - React Draggable - for making draggable components - TailwindCSS - For styling components - React Context - For State Management
+- Project uses the following dependencies
+  - React Flow - For building the flow builder
+  - React Draggable - for making draggable components
+  - TailwindCSS - For styling components
+  - React Context - For State Management
 
 ## Improvements for future
 
